@@ -11,7 +11,7 @@ import voluptuous as vol
 
 from homeassistant.components.climate import UnitOfTemperature
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult, OptionsFlow
-from homeassistant.const import CONF_HOST, CONF_PORT
+from homeassistant.const import CONF_HOST, CONF_PORT, CONF_TOKEN
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import section
 from homeassistant.helpers.selector import (
@@ -59,6 +59,7 @@ class FlowHandler(ConfigFlow, domain=DOMAIN):
         """Initialize Heatmiser Neo options flow."""
         self._host = DEFAULT_HOST
         self._port = DEFAULT_PORT
+        self._token = None
         self._errors = None
 
     async def async_step_zeroconf(
@@ -105,7 +106,7 @@ class FlowHandler(ConfigFlow, domain=DOMAIN):
     def _async_get_entry(self) -> ConfigFlowResult:
         return self.async_create_entry(
             title=f"{self._host}:{self._port}",
-            data={CONF_HOST: self._host, CONF_PORT: self._port},
+            data={CONF_HOST: self._host, CONF_PORT: self._port, CONF_TOKEN: self._token},
         )
 
     async def async_step_user(
@@ -117,6 +118,7 @@ class FlowHandler(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             self._host = user_input[CONF_HOST]
             self._port = user_input[CONF_PORT]
+            self._token = user_input[CONF_TOKEN]
 
             await self.async_set_unique_id(f"{self._host}:{self._port}")
             self._abort_if_unique_id_configured()
@@ -133,6 +135,7 @@ class FlowHandler(ConfigFlow, domain=DOMAIN):
                 {
                     vol.Required(CONF_HOST, default=self._host): str,
                     vol.Required(CONF_PORT, default=self._port): int,
+                    vol.Required(CONF_TOKEN, default=self._token): str,
                 }
             ),
             errors=self._errors,
