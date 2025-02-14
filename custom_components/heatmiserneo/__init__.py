@@ -56,7 +56,7 @@ async def async_setup_entry(
 
     # Make this configurable or retrieve from an API later.
     hub_serial_number = f"NEOHUB-SN:000000-{host}"
-    hub = NeoHub(host, port, token)
+    hub = NeoHub(host=host, port=port, token=token)
 
     coordinator = HeatmiserNeoCoordinator(hass, hub)
 
