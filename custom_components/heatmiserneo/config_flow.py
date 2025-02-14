@@ -135,7 +135,7 @@ class FlowHandler(ConfigFlow, domain=DOMAIN):
                 {
                     vol.Required(CONF_HOST, default=self._host): str,
                     vol.Required(CONF_PORT, default=self._port): int,
-                    vol.Required(CONF_TOKEN, default=self._token): str,
+                    vol.Optional(CONF_TOKEN, default=self._token): str,
                 }
             ),
             errors=self._errors,

@@ -49,6 +49,11 @@ async def async_setup_entry(
     host = entry.data[CONF_HOST]
     port = entry.data[CONF_PORT]
     token = entry.data[CONF_TOKEN]
+    
+    _LOGGER.debug("async_setup_entry: %s %s %s", host, port, token)
+
+    _LOGGER.debug("async_setup_entry complete entry.data: %s", entry.data)
+
     # Make this configurable or retrieve from an API later.
     hub_serial_number = f"NEOHUB-SN:000000-{host}"
     hub = NeoHub(host, port, token)
